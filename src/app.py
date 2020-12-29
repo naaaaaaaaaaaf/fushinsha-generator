@@ -60,7 +60,7 @@ def worker():
     sentence = result[0] + '\n' + result[1] + '\n' + result[2]
     sentence = sentence.replace(' ', '') + ' #bot'
     try:
-        #post_toot(domain, write_access_token, {"status": sentence})
+        post_toot(domain, write_access_token, {"status": sentence})
         print("投稿しました。 内容: " + sentence)
     except Exception as e:
         print("投稿エラー: {}".format(e))

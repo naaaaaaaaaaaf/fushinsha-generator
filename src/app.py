@@ -11,7 +11,7 @@ import exportModel
 
 # コンフィグの読み込み
 config_ini = configparser.ConfigParser()
-config_ini.read('config.ini', encoding='utf-8')
+config_ini.read('config/config.ini', encoding='utf-8')
 elements = ['serihu','joukyou','iti']
 
 def genModel(elements):
@@ -44,6 +44,7 @@ def post_toot(domain, access_token, params):
 
 def worker():
     #モデルの作成について
+    print("開始します…")
     if (os.path.isfile('chainfiles/iti.json')):
         print("モデルは再生成されません")
     else:
@@ -54,6 +55,7 @@ def worker():
     sentence = result[0] + '\n' + result[1] + '\n' + result[2] + ' #bot'
     try:
         post_toot(domain, write_access_token, {"status": sentence})
+        print("投稿しました。 内容: " + sentence)
     except Exception as e:
         print("投稿エラー: {}".format(e))
 def schedule(f, interval=1200, wait=True):

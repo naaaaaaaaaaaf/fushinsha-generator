@@ -17,7 +17,7 @@ def getData(type):
     soup = BeautifulSoup(url.content, "html.parser")
     a = soup.find_all(style="margin-top: 6px; font-size: 12px; line-height: 14px;") 
     for i in a:
-      text = i.string.replace('\t','').replace('\n','')
+      text = i.string.replace('\t','').replace('\n','').replace('*','')
       text = text.split(' ')[0]
       list.append(text)
     return list

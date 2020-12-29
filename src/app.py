@@ -28,7 +28,6 @@ def genText(elements):
         with open(path) as f:
             textModel = markovify.Text.from_json(f.read())
             sentence = textModel.make_sentence(tries=300)
-            sentence = sentence.replace(' ','')
             if i == 'serihu':
                 sentence = '「' + sentence + '」'
             result.append(sentence)
@@ -52,7 +51,8 @@ def worker():
     domain = config_ini['read']['domain']
     write_access_token = config_ini['write']['access_token']
     result = genText(elements)
-    sentence = result[0] + '\n' + result[1] + '\n' + result[2] + ' #bot'
+    sentence = result[0] + '\n' + result[1] + '\n' + result[2]
+    sentence = sentence.replace(' ','')+ ' #bot'
     try:
         post_toot(domain, write_access_token, {"status": sentence})
         print("投稿しました。 内容: " + sentence)

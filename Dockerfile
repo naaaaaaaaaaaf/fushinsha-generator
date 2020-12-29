@@ -8,7 +8,7 @@ RUN rm -rf ./mecab-ipadic-neologd
 RUN ln -s /var/lib/mecab/dic /usr/lib/mecab/dic
 RUN mkdir /var/app
 WORKDIR /var/app
-#COPY Pipfile ./
-#COPY Pipfile.lock ./
+COPY Pipfile ./
+COPY Pipfile.lock ./
 RUN pip install pipenv
-#RUN pipenv install --system
+RUN pipenv install --system

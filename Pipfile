@@ -11,6 +11,8 @@ markovify = "*"
 mecab-python3 = "==0.996.5"
 
 [dev-packages]
+autopep8 = "*"
+flake8 = "*"
 
 [requires]
 python_version = "3.8.5"

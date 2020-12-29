@@ -11,7 +11,7 @@ import exportModel
 
 # コンフィグの読み込み
 config_ini = configparser.ConfigParser()
-config_ini.read('config/config.ini', encoding='utf-8')
+config_ini.read('../config/config.ini', encoding='utf-8')
 elements = ['serihu','joukyou','iti']
 
 def genModel(elements):

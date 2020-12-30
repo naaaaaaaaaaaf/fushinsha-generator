@@ -24,7 +24,7 @@ class Config(object):
             'id': 'job1',
             'func': 'app:worker',
             'trigger': 'interval',
-            'seconds': 60
+            'seconds': 1200
         }
     ]
 

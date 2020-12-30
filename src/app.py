@@ -1,9 +1,9 @@
+from flask_apscheduler import APScheduler
+from flask import Flask, request, redirect, url_for, abort, jsonify, render_template
 import os
-import re
 import configparser
 import time
 import threading
-import datetime
 import pandas
 import markovify
 import requests
@@ -15,6 +15,18 @@ config_ini = configparser.ConfigParser()
 config_ini.read('config/config.ini', encoding='utf-8')
 elements = ['serihu', 'joukyou', 'iti']
 
+app = Flask(__name__)
+class Config(object):
+    JOBS = [
+        {
+            'id': 'job1',
+            'func': 'app:worker',
+            'trigger': 'interval',
+            'seconds': 10
+        }
+    ]
+
+    SCHEDULER_API_ENABLED = True
 
 def genModel(elements):
     date_index = pandas.date_range(start="2018-01", end="2021-01", freq="M").to_series().dt.strftime("%Y%m")
@@ -46,7 +58,6 @@ def post_toot(domain, access_token, params):
         raise Exception('リクエストに失敗しました。')
     return response
 
-
 def worker():
     # モデルの作成について
     print("開始します…")
@@ -60,24 +71,26 @@ def worker():
     sentence = result[0] + '\n' + result[1] + '\n' + result[2]
     sentence = sentence.replace(' ', '') + ' #bot'
     try:
-        post_toot(domain, write_access_token, {"status": sentence})
+        #post_toot(domain, write_access_token, {"status": sentence})
         print("投稿しました。 内容: " + sentence)
     except Exception as e:
         print("投稿エラー: {}".format(e))
 
-
-def schedule(f, interval=1200, wait=True):
-    base_time = time.time()
-    next_time = 0
-    while True:
-        t = threading.Thread(target=f)
-        t.start()
-        if wait:
-            t.join()
-        next_time = ((base_time - time.time()) % interval) or interval
-        time.sleep(next_time)
+@app.route('/api/genText', methods=["GET"])
+def api_genText():
+    result = genText(elements)
+    sentence = result[0] + '\n' + result[1] + '\n' + result[2]
+    sentence = sentence.replace(' ', '')
+    return jsonify({"result": True, "message": sentence}), 200
 
 
 if __name__ == "__main__":
     # 定期実行部分
-    schedule(worker)
+    app.config.from_object(Config())
+
+    scheduler = APScheduler()
+    # it is also possible to enable the API directly
+    # scheduler.api_enabled = True
+    scheduler.init_app(app)
+    scheduler.start()
+    app.run(use_reloader=False,debug=True)

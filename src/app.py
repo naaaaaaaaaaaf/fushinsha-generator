@@ -70,7 +70,7 @@ def worker():
     domain = config_ini['read']['domain']
     write_access_token = config_ini['write']['access_token']
     result = genText(elements)
-    sentence = result[0] + '\n' + result[1] + '\n【' + result[2] + '】より'
+    sentence = result[0] + '\n' + result[1] + '\n【' + result[2] + '】にて'
     sentence = sentence.replace(' ', '') + ' #bot'
     try:
         post_toot(domain, write_access_token, {"status": sentence})
@@ -81,7 +81,7 @@ def worker():
 @app.route('/api/genText', methods=["GET"])
 def api_genText():
     result = genText(elements)
-    sentence = result[0] + '\n' + result[1] + '\n【' + result[2] + '】より'
+    sentence = result[0] + '\n' + result[1] + '\n【' + result[2] + '】にて'
     sentence = sentence.replace(' ', '')
     return jsonify({"message": sentence}), 200
 

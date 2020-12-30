@@ -14,4 +14,4 @@ services:
     command: >
       /bin/bash -c "
       cd /scripts &&
-      python3 app.py"
+      gunicorn -c gunicorn.py app:app"

@@ -12,6 +12,7 @@ mecab-python3 = "==0.996.5"
 flask = "*"
 flask-apscheduler = "*"
 flask-cors = "*"
+gunicorn = "==20.0.4"
 
 [dev-packages]
 autopep8 = "*"

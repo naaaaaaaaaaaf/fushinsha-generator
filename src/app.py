@@ -94,4 +94,4 @@ if __name__ == "__main__":
     # scheduler.api_enabled = True
     scheduler.init_app(app)
     scheduler.start()
-    app.run(use_reloader=False,debug=True)
+    app.run(use_reloader=False,host = "0.0.0.0")

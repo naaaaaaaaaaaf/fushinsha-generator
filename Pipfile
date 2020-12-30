@@ -9,6 +9,8 @@ requests = "*"
 pandas = "*"
 markovify = "*"
 mecab-python3 = "==0.996.5"
+flask = "*"
+flask-apscheduler = "*"
 
 [dev-packages]
 autopep8 = "*"

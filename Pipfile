@@ -11,6 +11,7 @@ markovify = "*"
 mecab-python3 = "==0.996.5"
 flask = "*"
 flask-apscheduler = "*"
+flask-cors = "*"
 
 [dev-packages]
 autopep8 = "*"

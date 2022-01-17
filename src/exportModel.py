@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import MeCab
 import markovify
-mecabW = MeCab.Tagger("-d /usr/lib/mecab/dic/mecab-ipadic-neologd -O wakati")
+mecabW = MeCab.Tagger("-r /dev/null -d /usr/lib/mecab/dic/ipadic-utf8 -O wakati")
 
 
 def generateAndExport(src, dest, state_size=3):

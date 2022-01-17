@@ -14,7 +14,7 @@ import exportModel
 # コンフィグの読み込み
 config_ini = configparser.ConfigParser()
 config_ini.read('config/config.ini', encoding='utf-8')
-elements = ['serihu', 'joukyou', 'iti']
+elements = ['serihu', 'joukyou']
 
 app = Flask(__name__)
 CORS(app)
@@ -31,7 +31,7 @@ class Config(object):
     SCHEDULER_API_ENABLED = True
 
 def genModel(elements):
-    date_index = pandas.date_range(start="2018-01", end="2021-01", freq="M").to_series().dt.strftime("%Y%m")
+    date_index = pandas.date_range(start="2018-01", end="2022-01", freq="M").to_series().dt.strftime("%Y%m")
     for i in elements:
         path = 'chainfiles/' + i + '.json'
         size = 2 if i == 'iti' else 3
@@ -63,14 +63,14 @@ def post_toot(domain, access_token, params):
 def worker():
     # モデルの作成について
     print("開始します…")
-    if (os.path.isfile('chainfiles/iti.json')):
+    if (os.path.isfile('chainfiles/serihu.json')):
         print("モデルは再生成されません")
     else:
         genModel(elements)
     domain = config_ini['read']['domain']
     write_access_token = config_ini['write']['access_token']
     result = genText(elements)
-    sentence = result[0] + '\n' + result[1] + '\n【' + result[2] + '】にて'
+    sentence = result[0] + '\n' + result[1]
     sentence = sentence.replace(' ', '') + ' #bot'
     try:
         post_toot(domain, write_access_token, {"status": sentence})
@@ -81,7 +81,7 @@ def worker():
 @app.route('/api/genText', methods=["GET"])
 def api_genText():
     result = genText(elements)
-    sentence = result[0] + '\n' + result[1] + '\n【' + result[2] + '】にて'
+    sentence = result[0] + '\n' + result[1]
     sentence = sentence.replace(' ', '')
     return jsonify({"message": sentence}), 200
 

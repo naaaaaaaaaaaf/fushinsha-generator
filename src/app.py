@@ -18,17 +18,6 @@ elements = ['serihu', 'joukyou']
 
 app = Flask(__name__)
 CORS(app)
-class Config(object):
-    JOBS = [
-        {
-            'id': 'job1',
-            'func': 'app:worker',
-            'trigger': 'interval',
-            'seconds': 1200
-        }
-    ]
-
-    SCHEDULER_API_ENABLED = True
 
 def genModel(elements):
     date_index = pandas.date_range(start="2018-01", end="2022-01", freq="M").to_series().dt.strftime("%Y%m")
@@ -50,15 +39,6 @@ def genText(elements):
                 sentence = '「' + sentence + '」'
             result.append(sentence)
     return result
-
-
-def post_toot(domain, access_token, params):
-    headers = {'Authorization': 'Bearer {}'.format(access_token)}
-    url = "https://{}/api/v1/statuses".format(domain)
-    response = requests.post(url, headers=headers, json=params)
-    if response.status_code != 200:
-        raise Exception('リクエストに失敗しました。')
-    return response
 
 def worker():
     # モデルの作成について
@@ -87,11 +67,4 @@ def api_genText():
 
 
 if __name__ == "__main__":
-    # 定期実行部分
-    app.config.from_object(Config())
-
-    scheduler = APScheduler()
-    # scheduler.api_enabled = True
-    scheduler.init_app(app)
-    scheduler.start()
     app.run(use_reloader=False,host = "0.0.0.0")
